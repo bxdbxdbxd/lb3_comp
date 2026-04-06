@@ -48,7 +48,7 @@
     `{ Z, <program>, <declaration>, <assignment>, <function_call>, <string_arg>, <number>, <decimal>, <scientific>, <mantissa>, <exponent>, <sign>, <digits>, <digit>, <positive_digit>, <identifier> }`
 *   **Продукции (P):**
 Z → <program>
-
+```
 <program> → <declaration> | <function_call>
 
 <declaration> → 'let' <assignment>
@@ -75,7 +75,8 @@ Z → <program>
 
 <positive_digit> → '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
 
-<identifier> → <letter> (<letter> | <digit>)**
+<identifier> → <letter> (<letter> | <digit>)*
+```
 
 ### Классификация грамматики (по Хомскому)
 
