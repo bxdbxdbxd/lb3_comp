@@ -47,8 +47,9 @@
 *   **Нетерминальные символы (Vn):**
     `{ Z, <program>, <declaration>, <assignment>, <function_call>, <string_arg>, <number>, <decimal>, <scientific>, <mantissa>, <exponent>, <sign>, <digits>, <digit>, <positive_digit>, <identifier> }`
 *   **Продукции (P):**
-Z → <program>
 ```
+Z → <program>
+
 <program> → <declaration> | <function_call>
 
 <declaration> → 'let' <assignment>
