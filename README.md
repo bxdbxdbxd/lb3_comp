@@ -89,35 +89,35 @@ Z → <program>
 ## Пример работы программы
 
 ### Правильно записанное выражение
-![](images/0.png)
+![](image/0.png)
 
 ### Допущена одна ошибка
 
-![](images/1.png)
+![](image/1.png)
 
 
-![](images/1_1.png)
+![](image/1_1.png)
 
 
-![](images/1_2.png)
+![](image/1_2.png)
 
 
-![](images/1_3.png)
+![](image/1_3.png)
 
 
-![](images/1_4.png)
+![](image/1_4.png)
 
 
 ### Допущено две ошибки
 
-![](images/2.png)
+![](image/2.png)
 
 
-![](images/2_1.png)
+![](image/2_1.png)
 
 ### Допущено три ощибки и более
 
-![](images/3.png)
+![](image/3.png)
 
 
-![](images/4.png)
+![](image/4.png)
