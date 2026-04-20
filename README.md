@@ -43,15 +43,11 @@
 ### Грамматика G[Z] для научной нотации в числах JavaScript
 
 *   **Терминальные символы (Vt):**
-    `{ 0-9, ., e, E, +, -, ", (, ), let, =, ;, пробел, табуляция, конец строки }`
+    `{ 0-9, ., a-z, A-Z, +, -, ", (, ), =, ;, пробел, табуляция, конец строки }`
 *   **Нетерминальные символы (Vn):**
-    `{ Z, <program>, <declaration>, <assignment>, <function_call>, <string_arg>, <number>, <decimal>, <scientific>, <mantissa>, <exponent>, <sign>, <digits>, <digit>, <positive_digit>, <identifier> }`
+    `{<declaration>, <assignment>, <function_call>, <string_arg>, <number>, <decimal>, <scientific>, <mantissa>, <exponent>, <sign>, <digits>, <digit>, <positive_digit>, <identifier> }`
 *   **Продукции (P):**
 ```
-Z → <program>
-
-<program> → <declaration> | <function_call>
-
 <declaration> → 'let' <assignment>
 
 <assignment> → <identifier> '=' <function_call>
@@ -77,6 +73,8 @@ Z → <program>
 <positive_digit> → '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
 
 <identifier> → <letter> (<letter> | <digit>)*
+
+<letter> → 'a' | 'b' | ... | 'z' | 'A' | 'B' | ... | 'Z'
 ```
 
 ### Классификация грамматики (по Хомскому)
