@@ -89,6 +89,129 @@
 
 Разрабатываемый синтаксический анализатор построен на базе грамматики КС. При нахождении лексемы, которая не соответствует грамматике, предлагается свести алгоритм нейтрализации к последовательному пропуску токенов во входной цепочке до тех пор, пока следующий токен не окажется одним из синхронизирующих токенов, допустимых для возобновления разбора.
 
+## Дополнительное задание
+
+### Грамматика в формате ANTLR
+
+```
+grammar ScientificNotationCompact;
+
+options
+{
+    language = CSharp;
+}
+
+// Правила парсера
+program : declaration EOF;
+
+declaration : 'let' assignment;
+
+assignment : IDENTIFIER '=' functionCall;
+
+functionCall : 'parseFloat' '(' stringArg ')' ';';
+
+stringArg : '"' number '"' | '\'' number '\'';
+
+number : decimal | scientific;
+
+decimal : DIGITS '.' DIGITS;
+
+scientific : (decimal | DIGITS) ('e' | 'E') sign DIGITS;
+
+sign : ('+' | '-')?;
+
+// Правила лексера
+IDENTIFIER : [a-zA-Z] ([a-zA-Z] | [0-9])*;
+DIGITS : [0-9]+;
+
+// Пропускаем пробелы
+WS : [ \t\r\n]+ -> skip;
+```
+
+###  Генерация кода с помощью ANTLR
+
+1. Создание bat-файла для генерации
+
+```
+@echo off
+set ANTLR_JAR=antlr-4.13.1-complete.jar
+set GRAMMAR_FILE=ScientifiNotation.g4
+set OUTPUT_FOLDER=Generated
+
+java -jar %ANTLR_JAR% -o %OUTPUT_FOLDER% -Dlanguage=CSharp %GRAMMAR_FILE%
+
+echo fin
+pause
+```
+
+2. Интеграция в проект
+
+```
+using Antlr4.Runtime;
+using Antlr4.Runtime.Tree;
+
+private void RunAntlrAnalysis(string text)
+{
+    try
+    {
+        ICharStream input = CharStreams.fromString(text);
+        ScientificNotationLexer lexer = new ScientificNotationLexer(input);
+        var lexerErrorListener = new LexerErrorListener();
+        lexer.AddErrorListener(lexerErrorListener);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        ScientificNotationParser parser = new ScientificNotationParser(tokens);
+        parser.RemoveErrorListeners();
+        var parserErrorListener = new ParserErrorListener();
+        parser.AddErrorListener(parserErrorListener);
+        var tree = parser.program();
+        if (lexerErrorListener.Errors.Count == 0 && parserErrorListener.Errors.Count == 0)
+        {
+            outputTextBox.AppendText("ANTLR: Синтаксический анализ успешно завершен\n");
+            outputTextBox.AppendText($"Дерево разбора: {tree.ToStringTree(parser)}\n");
+        }
+        else
+        {
+            outputTextBox.AppendText($"ANTLR: Обнаружено ошибок: {lexerErrorListener.Errors.Count + parserErrorListener.Errors.Count}\n");
+            foreach (var error in lexerErrorListener.Errors)
+                outputTextBox.AppendText($"Лексическая ошибка: {error}\n");
+            foreach (var error in parserErrorListener.Errors)
+                outputTextBox.AppendText($"Синтаксическая ошибка: {error}\n");
+        }
+    }
+    catch (Exception ex)
+    {
+        outputTextBox.AppendText($"Критическая ошибка ANTLR: {ex.Message}\n");
+    }
+}
+
+
+public class LexerErrorListener : IAntlrErrorListener<int>
+{
+    public List<string> Errors { get; } = new List<string>();
+    
+    public void SyntaxError(IRecognizer recognizer, int offendingSymbol, int line, 
+                            int charPositionInLine, string msg, RecognitionException e)
+    {
+        Errors.Add($"Строка {line}, позиция {charPositionInLine}: {msg}");
+    }
+}
+
+public class ParserErrorListener : IAntlrErrorListener<IToken>
+{
+    public List<string> Errors { get; } = new List<string>();
+    
+    public void SyntaxError(IRecognizer recognizer, IToken offendingSymbol, int line,
+                            int charPositionInLine, string msg, RecognitionException e)
+    {
+        Errors.Add($"Строка {line}, позиция {charPositionInLine}: {msg}");
+    }
+}
+```
+
+### Вывод
+
+Грамматика, переписанная в формате ANTLR, позволяет автоматически генерировать лексер и парсер на C#. Это значительно упрощает разработку и поддержку синтаксического анализатора, так как ANTLR самостоятельно строит дерево разбора и обрабатывает многие аспекты синтаксического анализа, включая нейтрализацию ошибок.
+
 ## Пример работы программы
 
 ### Правильно записанное выражение
