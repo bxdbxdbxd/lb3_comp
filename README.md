@@ -43,7 +43,7 @@
 ### Грамматика G[Z] для научной нотации в числах JavaScript
 
 *   **Терминальные символы (Vt):**
-    `{ 0-9, ., a-z, A-Z, +, -, ", (, ), =, ;, пробел, табуляция, конец строки }`
+    `{ 0-9, ., a-z, A-Z, +, -, ", (, ), =, ;, пробел }`
 *   **Нетерминальные символы (Vn):**
     `{<declaration>, <assignment>, <function_call>, <string_arg>, <number>, <decimal>, <scientific>, <mantissa>, <exponent>, <sign>, <digits>, <digit>, <positive_digit>, <identifier> }`
 *   **Продукции (P):**
